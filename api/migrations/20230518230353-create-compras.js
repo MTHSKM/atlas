@@ -14,7 +14,8 @@ module.exports = {
       },
       cliente_id: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUID,
         references: { model: 'Clientes', key: 'id' }
       },
       produto_id:{

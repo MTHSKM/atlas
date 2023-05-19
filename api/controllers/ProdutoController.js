@@ -1,54 +1,57 @@
-const database = require('../models')
+const ProdutoService = require('../services/ProdutoService')
+
+const produtoService = new ProdutoService()
 
 class ProdutoController {
+    static async criaProduto(req,res){
+        const novoProduto = req.body
+
+        try{
+            const produto = await produtoService.criaProduto(novoProduto)
+    
+            res.status(201).send(produto)
+        }catch(error){
+            res.status(400).send( {message: error.message} )
+        }
+    }
+
     static async pegaTodosOsProdutos(req,res){
         try{
-            const todasAsTurmas = await database.Produtos.findAll()
-            return res.status(200).json(todasAsTurmas)
+            const todosOsProdutos = await produtoService.pegaTodosOsProdutos()
+            res.status(201).send(todosOsProdutos)
         }catch(error){
-            return res.status(500).json(error.message)
+            res.status(400).send( {message: error.message} )
         }
     }
 
     static async pegaUmProduto(req,res){
-        const { id } = req.params
         try{
-            const umProduto = await database.Produtos.findOne( { where: { id: Number(id) } } )
-            return res.status(200).json(umProduto)
+            const { id } = req.params
+            const umProduto = await produtoService.pegaUmProduto(id)
+            res.status(201).send(umProduto)
         }catch(error){
-            return res.status(500).json(error.message)
+            res.status(400).send({message: error.message})
         }
     }
 
-    static async criaProduto(req,res){
-        const novoProduto = req.body
-        try{
-            const novoProdutoCriado = await database.Produtos.create(novoProduto)
-            return res.status(200).json(novoProdutoCriado)
+    static async apagaUmProduto(req,res){
+        try {
+            const { id } = req.params
+            await produtoService.apagaUmProduto(id)
+            res.status(200).send({message: 'Produto deletado com sucesso'})
         }catch(error){
-            return res.status(500).json(error.message)
+            res.status(400).send({message: error.message})
         }
     }
 
     static async atualizaProduto(req,res){
         const { id } = req.params
-        const novasInfos = req.body
+        const { nome, descricao, valor, quantidade_estoque } = req.body
         try{
-            await database.Produtos.update(novasInfos, {where: { id: Number(id) }})
-            const produtosAtualizado = await database.Clientes.findOne( {where: { id: Number(id) }} )
-            return res.status(200).json(produtosAtualizado)
+            const produtoAtualizado = await produtoService.atualizaProduto({ id, nome, descricao, valor, quantidade_estoque })
+            res.status(200).json(produtoAtualizado)
         }catch(error){
-            return res.status(500).json(error.message)
-        }
-    }
-
-    static async apagaProduto(req,res){
-        const { id } = req.params
-        try{
-            await database.Produtos.destroy( {where: { id: Number(id) }} )
-            return res.status(200).json({ mensagem: `id ${id} deletado.` })
-        }catch(error){
-            return res.status(500).json(error.message)
+            res.status(400).send({ message: error.message })
         }
     }
 }

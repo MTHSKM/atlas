@@ -1,54 +1,58 @@
-const database = require('../models')
+const ClienteService = require('../services/ClienteService')
+
+const clienteService = new ClienteService()
 
 class ClienteController {
+    static async criaCliente(req,res) {
+        const novoCliente = req.body
+
+        try{
+            const cliente = await clienteService.criaCliente(novoCliente)
+    
+            res.status(201).send(cliente)
+        }catch(error){
+            res.status(400).send( {message: error.message} )
+        }
+
+    }
+
     static async pegaTodosOsClientes(req,res){
         try{
-            const todosOsClientes = await database.Clientes.findAll()
-            return res.status(200).json(todosOsClientes)
+            const todosOsClientes = await clienteService.pegaTodosOsClientes()
+            res.status(201).send(todosOsClientes)
         }catch(error){
-            return res.status(500).json(error.message)
+            res.status(400).send( {message: error.message} )
         }
     }
 
     static async pegaUmCliente(req,res){
-        const { id } = req.params
         try{
-            const umCliente = await database.Clientes.findOne( {where: { id: Number(id) }} )
-            return res.status(200).json(umCliente)
+            const { id } = req.params
+            const umCliente = await clienteService.pegaUmCliente(id)
+            res.status(201).send(umCliente)
         }catch(error){
-            return res.status(500).json(error.message)
+            res.status(400).send({message: error.message})
         }
     }
 
-    static async criaCliente(req,res){
-        const novoCliente = req.body
-        try{
-            const novoClienteCriado = await database.Clientes.create(novoCliente)
-            return res.status(200).json(novoClienteCriado)
+    static async apagaUmCliente(req,res){
+        try {
+            const { id } = req.params
+            await clienteService.apagaUmCliente(id)
+            res.status(200).send({message: 'Cliente deletado com sucesso'})
         }catch(error){
-            return res.status(500).json(error.message)
+            res.status(400).send({message: error.message})
         }
     }
 
     static async atualizaCliente(req,res){
         const { id } = req.params
-        const novasInfos = req.body
+        const { nome, email, telefone, cpf, cep, complemento } = req.body
         try{
-            await database.Clientes.update(novasInfos, {where: { id: Number(id) }})
-            const clienteAtualizado = await database.Clientes.findOne( {where: { id: Number(id) }} )
-            return res.status(200).json(clienteAtualizado)
+            const clienteAtualizado = await clienteService.atualizaCliente({ id, nome, email, telefone, cpf, cep, complemento })
+            res.status(200).json(clienteAtualizado)
         }catch(error){
-            return res.status(500).json(error.message)
-        }
-    }
-
-    static async apagaCliente(req,res){
-        const { id } = req.params
-        try{
-            await database.Clientes.destroy( {where: { id: Number(id) }} )
-            return res.status(200).json({ mensagem: `id ${id} deletado.` })
-        }catch(error){
-            return res.status(500).json(error.message)
+            res.status(400).send({ message: error.message })
         }
     }
 }

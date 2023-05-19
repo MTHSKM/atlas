@@ -3,10 +3,11 @@ const ProdutoController = require('../controllers/ProdutoController')
 
 const router = Router()
 
-router.get('/produtos', ProdutoController.pegaTodosOsProdutos)
-router.get('/produtos/:id', ProdutoController.pegaUmProduto)
-router.post('/produtos', ProdutoController.criaProduto)
-router.put('/produtos/:id', ProdutoController.atualizaProduto)
-router.delete('/produtos/:id', ProdutoController.apagaProduto)
+router
+    .post('/produtos', ProdutoController.criaProduto)
+    .get('/produtos', ProdutoController.pegaTodosOsProdutos)
+    .get('/produtos/:id', ProdutoController.pegaUmProduto)
+    .put('/produtos/:id', ProdutoController.atualizaProduto)
+    .delete('/produtos/:id', ProdutoController.apagaUmProduto)
 
 module.exports = router

@@ -21,6 +21,9 @@ module.exports = {
       quantidade_estoque: {
         type: Sequelize.INTEGER
       },
+      imagem: {
+        type: Sequelize.STRING(10000)
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

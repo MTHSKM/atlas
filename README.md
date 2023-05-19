@@ -7,7 +7,10 @@ Express -> Usado para subir o servidor local e gerenciar rotas criadas,
 Body-Parser -> Converte os dados do corpo das requisições HTTP [dados convertidos para o tipo JSON],
 Nodemon -> Vai escutar todas as alterações da aplicação, derrubando e subindo o servidor automaticamente [seria o mesmo do live server],
 Sequelize -> ORM,
-Sequelize-cli -> ORM linha de comando [command line interface = Terminal]
+Sequelize-cli -> ORM linha de comando [command line interface = Terminal],
+Bcryptjs -> Criptgrafar a senha do cliente,
+UUID -> Geração de uuids,
+JsonWebToken -> Autenticação,
 
 
 

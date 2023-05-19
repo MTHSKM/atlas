@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
   Clientes.init({
     nome: DataTypes.STRING,
     email: DataTypes.STRING,
+    senha: DataTypes.STRING,
     telefone: DataTypes.STRING,
     cpf: DataTypes.STRING,
     cep: DataTypes.STRING,
@@ -25,6 +26,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Clientes',
+    defaultScope: {
+      attributes: {
+        exclude: ['senha']
+      }
+    }
   });
   return Clientes;
 };
