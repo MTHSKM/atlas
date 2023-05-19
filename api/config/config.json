@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "Dowonkim0",
+    "password": "root",
     "database": "atlas",
     "host": "127.0.0.1",
     "dialect": "mysql"
