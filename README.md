@@ -20,6 +20,7 @@ Passo nº 0)
 
 1º Passo) Configurar as configurações certas em [api -> config -> config.json -> "developer"]
 2º Passo) Criar um arquivo chamado ".sequelizerc" na pasta raiz e inserir o seguinte código:
+
     const path = require('path');
 
     module.exports = {
